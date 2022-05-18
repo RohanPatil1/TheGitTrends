@@ -19,6 +19,7 @@ import com.google.accompanist.swiperefresh.SwipeRefresh
 import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 import com.rohan.thegittrends.ui.view_model.TrendingViewModel
 import com.rohan.thegittrends.ui.widgets.MainAppbar
+import com.rohan.thegittrends.ui.widgets.RepoTile
 import com.rohan.thegittrends.ui.widgets.SearchBarState
 
 @Composable
@@ -91,7 +92,7 @@ fun HomePage(viewModel: TrendingViewModel = hiltViewModel()) {
             res.data?.let {
                 LazyColumn {
                     items(it) {
-                        Text(text = it.name)
+                        RepoTile(item = it)
                     }
                 }
             }
