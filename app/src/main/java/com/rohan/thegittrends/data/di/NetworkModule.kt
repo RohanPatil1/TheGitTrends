@@ -1,7 +1,6 @@
 package com.rohan.thegittrends.data.di
 
 import com.rohan.thegittrends.data.network.ApiService
-import com.rohan.thegittrends.data.repository.TrendingRepository
 import com.rohan.thegittrends.utils.Constants.BASE_URL
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
@@ -41,10 +40,10 @@ class NetworkModule {
         return retrofit.create(ApiService::class.java)
     }
 
-
-    @Singleton
-    @Provides
-    fun provideTrendingRepository(apiService: ApiService) = TrendingRepository(apiService)
+//
+//    @Singleton
+//    @Provides
+//    fun provideTrendingRepository(apiService: ApiService,dao: TrendingDao) = TrendingRepository(apiService)
 
 
 }

@@ -1,21 +1,35 @@
 package com.rohan.thegittrends.utils
 
 
-sealed class Resource<out T> {
+data class Resource<out T>(
+    val status: Status,
+    val data: T?,
+    val error: Error?,
+    val message: String?
+) {
 
-    data class Success<out R>(val data: R?) : Resource<R>()
-    data class Failure(val message: String) : Resource<Nothing>()
-    object Loading : Resource<Nothing>()
+    enum class Status {
+        SUCCESS,
+        ERROR,
+        LOADING
+    }
 
+    companion object {
+        fun <T> success(data: T?): Resource<T> {
+            return Resource(Status.SUCCESS, data, null, null)
+        }
+
+        fun <T> error(message: String, error: Error?): Resource<T> {
+            return Resource(Status.ERROR, null, error, message)
+        }
+
+        fun <T> loading(data: T? = null): Resource<T> {
+            return Resource(Status.LOADING, data, null, null)
+        }
+    }
+
+    override fun toString(): String {
+        return "Result(status=$status, data=$data, error=$error, message=$message)"
+    }
 }
 
-
-//sealed class Resource<T>(val data: T? = null, val message: String? = null) {
-//
-//    class Success<T>(data: T?) : Resource<T>(data = data)
-//
-//    class Loading<T>(message: String?) : Resource<T>()
-//
-//    class Error<T>(message: String?) : Resource<T>(message = message)
-//
-//}

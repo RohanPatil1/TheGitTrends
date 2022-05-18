@@ -1,5 +1,10 @@
 package com.rohan.thegittrends.data.models
 
+import androidx.room.Entity
+import androidx.room.PrimaryKey
+
+
+@Entity(tableName = "trendingTable")
 data class GitRepoItem(
     val author: String,
     val avatar: String,
@@ -12,4 +17,7 @@ data class GitRepoItem(
     val name: String,
     val stars: Int,
     val url: String
-)
+) {
+    @PrimaryKey(autoGenerate = true)
+    var id: Int? = null
+}

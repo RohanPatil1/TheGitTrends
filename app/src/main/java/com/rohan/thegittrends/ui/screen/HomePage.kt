@@ -1,5 +1,6 @@
 package com.rohan.thegittrends.ui.screen
 
+import android.util.Log
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -17,18 +18,23 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.google.accompanist.swiperefresh.SwipeRefresh
 import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 import com.rohan.thegittrends.ui.view_model.TrendingViewModel
+import com.rohan.thegittrends.ui.widgets.MainAppbar
+import com.rohan.thegittrends.ui.widgets.SearchBarState
 
 @Composable
 fun HomePage(viewModel: TrendingViewModel = hiltViewModel()) {
     val res = viewModel.repoList.value
     val isRefreshing by viewModel.isRefreshing
 
+    val searchBarState by viewModel.searchBarState
+    val searchTextState by viewModel.searchTextState
 
 
     SwipeRefresh(
         state = rememberSwipeRefreshState(isRefreshing),
         onRefresh = { viewModel.refresh() },
     ) {
+
 
         if (res.isLoading) {
             Box(
@@ -57,15 +63,43 @@ fun HomePage(viewModel: TrendingViewModel = hiltViewModel()) {
             }
         }
 
+        Column(
+            modifier = Modifier.fillMaxSize(),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
 
-        res.data?.let {
-            LazyColumn {
-                items(it) {
-                    Text(text = it.name)
+
+            MainAppbar(
+                searchBarState = searchBarState,
+                searchText = searchTextState,
+                onTextChange = {
+                    viewModel.updateSearchTextState(text = it)
+                },
+                onCloseClicked = {
+                    viewModel.updateSearchBarState(searchBarState = SearchBarState.CLOSED)
+                    viewModel.resetSearch()
+                },
+                onSearchClicked = {
+                    viewModel.onSearch(it)
+                    Log.d("Search", it)
+                },
+                onSearchTriggered = {
+                    viewModel.updateSearchBarState(searchBarState = SearchBarState.OPENED)
+                }
+            )
+
+            res.data?.let {
+                LazyColumn {
+                    items(it) {
+                        Text(text = it.name)
+                    }
                 }
             }
         }
+
+
     }
 
 
 }
+
