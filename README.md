@@ -11,6 +11,6 @@ Android application which shows github trending repositories.
 - MVVM
 
 
-![SS1](/ss/ss1.jpg)
+![SS1](/ss/ss2.jpg)
 
 ![SS2](/ss/ss1.jpg)
